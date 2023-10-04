@@ -12,6 +12,8 @@ public class Product {
     private Integer price;
     private Integer stock;
     private String description;
+
+    //springboot預設使用英國格林威治時區 GMT+0
     private Date createdDate;
     private Date lastModifiedDate;
 
