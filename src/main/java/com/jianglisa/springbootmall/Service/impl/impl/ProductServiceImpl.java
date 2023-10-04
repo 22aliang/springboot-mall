@@ -3,6 +3,7 @@ package com.jianglisa.springbootmall.Service.impl.impl;
 import com.jianglisa.springbootmall.Dao.IProductDao;
 import com.jianglisa.springbootmall.Model.Product;
 import com.jianglisa.springbootmall.Service.impl.IProductService;
+import com.jianglisa.springbootmall.dto.ProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,12 @@ public class ProductServiceImpl implements IProductService {
     //實作方法
     @Override
     public Product getProductById(Integer productId) {
+
         return iproductDao.getProductById(productId);
+    }
+
+    @Override
+    public Integer createProduct(ProductRequest productRequest) {
+        return iproductDao.createProduct(productRequest);
     }
 }
