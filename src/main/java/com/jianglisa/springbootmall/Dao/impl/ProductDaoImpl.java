@@ -1,8 +1,8 @@
 package com.jianglisa.springbootmall.Dao.impl;
 
 import com.jianglisa.springbootmall.Dao.ProductDao;
+import com.jianglisa.springbootmall.Dao.ProductQueryParams;
 import com.jianglisa.springbootmall.Model.Product;
-import com.jianglisa.springbootmall.constant.ProductCategory;
 import com.jianglisa.springbootmall.dto.ProductRequest;
 import com.jianglisa.springbootmall.rowmapper.ProductRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class ProductDaoImpl implements ProductDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public List<Product> getProducts(ProductCategory category, String search) {
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql ="SELECT product_id, product_name, category, image_url, price, stock, description, " +
                 "created_date, last_modified_date " +
                 "FROM product WHERE  1=1";
@@ -33,15 +33,15 @@ public class ProductDaoImpl implements ProductDao {
         Map<String, Object> map = new HashMap<>();
 
         // 下列在 Controller 為非必填，所以必須判斷是否為 null
-        if (category != null) {
+        if (productQueryParams.getCategory() != null) {
             sql = sql + " AND category = :category";
-            map.put("category", category.name());
+            map.put("category", productQueryParams.getCategory().name());
         }
 
-        if (search != null) {
+        if (productQueryParams.getSearch() != null) {
             // 模糊查詢
             sql = sql + " AND product_name LIKE :search";
-            map.put("search", "%" + search + "%");
+            map.put("search", "%" + productQueryParams.getSearch() + "%");
         }
 
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
