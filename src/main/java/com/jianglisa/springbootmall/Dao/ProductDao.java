@@ -1,11 +1,12 @@
-package com.jianglisa.springbootmall.Service.impl;
+package com.jianglisa.springbootmall.Dao;
 
 import com.jianglisa.springbootmall.Model.Product;
 import com.jianglisa.springbootmall.dto.ProductRequest;
 
-public interface IProductService {
-    //根據ID取得數據
+public interface ProductDao {
     Product getProductById(Integer productId);
 
     Integer createProduct(ProductRequest productRequest);
+
+    void updateProduct(Integer productId, ProductRequest productRequest);
 }

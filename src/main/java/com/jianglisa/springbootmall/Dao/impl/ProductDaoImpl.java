@@ -1,6 +1,6 @@
 package com.jianglisa.springbootmall.Dao.impl;
 
-import com.jianglisa.springbootmall.Dao.IProductDao;
+import com.jianglisa.springbootmall.Dao.ProductDao;
 import com.jianglisa.springbootmall.Model.Product;
 import com.jianglisa.springbootmall.dto.ProductRequest;
 import com.jianglisa.springbootmall.rowmapper.ProductRowMapper;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class ProductDaoImpl implements IProductDao {
+public class ProductDaoImpl implements ProductDao {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -65,5 +65,25 @@ public class ProductDaoImpl implements IProductDao {
         int productId = keyHolder.getKey().intValue();
 
         return productId;
+    }
+
+    @Override
+    public void updateProduct(Integer productId, ProductRequest productRequest) {
+        String sql = "UPDATE product SET product_name = :productName, category = :category, image_url = :imageUrl, " +
+                "price =:price, stock = :stock, description = :description, last_modified_date = :lastModifiedDate" +
+                " WHERE product_id = :productId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("productId", productId);
+
+        map.put("productName", productRequest.getProductName());
+        map.put("category", productRequest.getCategory().toString());
+        map.put("imageUrl", productRequest.getImageUrl());
+        map.put("price", productRequest.getPrice());
+        map.put("stock", productRequest.getStock());
+        map.put("description", productRequest.getDescription());
+
+        map.put("lastModifiedDate", new Date());
+
+        namedParameterJdbcTemplate.update(sql, map);
     }
 }
