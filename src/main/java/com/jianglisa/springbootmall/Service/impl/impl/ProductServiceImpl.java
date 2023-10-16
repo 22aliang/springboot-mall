@@ -3,6 +3,7 @@ package com.jianglisa.springbootmall.Service.impl.impl;
 import com.jianglisa.springbootmall.Dao.ProductDao;
 import com.jianglisa.springbootmall.Model.Product;
 import com.jianglisa.springbootmall.Service.impl.ProductService;
+import com.jianglisa.springbootmall.constant.ProductCategory;
 import com.jianglisa.springbootmall.dto.ProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,8 +17,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductDao productDao;
 
     @Override
-    public List<Product> getProducts() {
-        return productDao.getProducts();
+    public List<Product> getProducts(ProductCategory category, String search) {
+        return productDao.getProducts(category, search);
     }
 
     //實作方法

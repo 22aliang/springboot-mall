@@ -2,6 +2,7 @@ package com.jianglisa.springbootmall.Controller;
 
 import com.jianglisa.springbootmall.Model.Product;
 import com.jianglisa.springbootmall.Service.impl.ProductService;
+import com.jianglisa.springbootmall.constant.ProductCategory;
 import com.jianglisa.springbootmall.dto.ProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,13 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts() {
-        List<Product> productList = productService.getProducts();
+    public ResponseEntity<List<Product>> getProducts(
+            // 根據商品分類做查詢 ( 下拉選單 )
+            @RequestParam(required = false) ProductCategory category,
+            // 搜尋 ( 接API用&綜合查詢)
+            @RequestParam(required = false) String search
+    ) {
+        List<Product> productList = productService.getProducts(category, search);
 
         // 根據 RestfulAPI 的規則實作列表數據，不管有沒有查到都要回傳OK
         return ResponseEntity.status(HttpStatus.OK).body(productList);
