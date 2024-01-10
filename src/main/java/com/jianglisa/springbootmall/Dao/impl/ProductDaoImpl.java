@@ -28,21 +28,20 @@ public class ProductDaoImpl implements ProductDao {
         String sql ="SELECT product_id, product_name, category, image_url, price, stock, description, " +
                 "created_date, last_modified_date " +
                 "FROM product WHERE  1=1";
-        // WHERE  1=1 為了拼接 AND sql 語句使用
 
         Map<String, Object> map = new HashMap<>();
 
-        // 下列在 Controller 為非必填，所以必須判斷是否為 null
         if (productQueryParams.getCategory() != null) {
             sql = sql + " AND category = :category";
             map.put("category", productQueryParams.getCategory().name());
         }
 
         if (productQueryParams.getSearch() != null) {
-            // 模糊查詢
             sql = sql + " AND product_name LIKE :search";
             map.put("search", "%" + productQueryParams.getSearch() + "%");
         }
+
+        sql = sql + "ORDER_BY" + productQueryParams.getOrderBy() + "" + productQueryParams.getSort();
 
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
 

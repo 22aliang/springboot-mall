@@ -22,18 +22,22 @@ public class ProductController {
 
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getProducts(
-            // 根據商品分類做查詢 ( 下拉選單 )
+            // 查詢條件 Filtering
             @RequestParam(required = false) ProductCategory category,
-            // 搜尋 ( 接 API 用 & 綜合查詢)
-            @RequestParam(required = false) String search
+            @RequestParam(required = false) String search,
+
+            //排序 Sorting
+            @RequestParam(defaultValue = "created_data") String orderBy,
+            @RequestParam(defaultValue = "desc") String sort
     ) {
         ProductQueryParams productQueryParams = new ProductQueryParams();
         productQueryParams.setCategory(category);
         productQueryParams.setSearch(search);
+        productQueryParams.setOrderBy(orderBy);
+        productQueryParams.setSort(sort);
 
         List<Product> productList = productService.getProducts(productQueryParams);
 
-        // 根據 RestfulAPI 的規則實作列表數據，不管有沒有查到都要回傳OK
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
 
